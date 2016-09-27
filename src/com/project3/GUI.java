@@ -43,7 +43,7 @@ public class GUI extends JFrame {
 
 
     private static FileWriter Write;
-    private File csvLog = new File("log.csv");
+    private File csvLog = new File("project3.csv");
 
     // end of file vars
 
@@ -85,8 +85,19 @@ public class GUI extends JFrame {
 
 
     class ComputeButton implements ActionListener{
+        @Override
+
         public void actionPerformed(ActionEvent e){
             setValue();
+            if (eVal > 10 || eVal < 0){
+                JOptionPane.showMessageDialog(the_Frame, "Number entered is invalid, please try again :)");
+            } else if (rButIterative.isSelected()){
+                rOutput.setText(String.valueOf(Sequence.iterative(eVal)));
+                eOutput.setText(String.valueOf(Sequence.efficincy()));
+                //add to csv
+                // CODE SEQUENCE CLASS BEFORE CONTINUING;
+            }
+            clearValue();
         }
     }
 

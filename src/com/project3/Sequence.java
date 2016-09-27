@@ -5,29 +5,83 @@ package com.project3;
  */
 public class Sequence {
 
-    private static int efficiency = 0;
+    private static int effncy = 0;
+    private static int last;
+    private static int rVal = 0;
+    private static int nxt;
+
     // Default constructor so no object can be created from this class
-    private Sequence(){}
+    private Sequence() {
+    }
+
+    public static int recursion(int n) {
+        effncy++;
+        return actualRecursion(n); // Just calls the recursive method
+    }
+
+    public static int actualRecursion(int n) {
+        effncy = 0;
+        // This method takes in the input of n and if it equals 0 or 1 returns
+
+        if (n == 0) {
+            effncy++;
+            return 0;
+        } else if (n == 1) {
+            effncy++;
+            return 1;
+        } else {
+            return 2 * actualRecursion(n - 1) + actualRecursion(n - 2);
+        }
+
+    }
+    public static int efficincy(){
+        return effncy;
+    }
 
 
+    public static int iterative(int n) {
+        effncy = 0;
 
 
+        if (n == 0) {
+            effncy++;
+            return 0;
+        } else if (n == 1) {
+            effncy++;
+            return 1;
+        } else {
+            last = 1;
+            nxt = 0;
 
+            for (int i = 2; i <= n; i++) {
+                effncy++;
+                rVal = 2 * last + nxt;
+                nxt = last;
+                last = rVal;
+            }
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return rVal;
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
