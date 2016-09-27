@@ -1,6 +1,8 @@
 package com.project3;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -59,9 +61,57 @@ public class GUI extends JFrame {
         setSize(width, height);
     }
 
+    public int getValue(){
+        try{
+            return Integer.parseInt(enterNum.getText());
+
+
+        }
+        catch (NumberFormatException x){
+            clearValue();
+            return 11;
+
+        }
+    }
+
+    public void  clearValue(){
+        enterNum.setText("");
+    }
+
+    public void setValue(){
+        this.eVal = getValue();
+    }
+
+
+
+    class ComputeButton implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            setValue();
+        }
+    }
+
 
     public GUI(){
         super("Iterative & Recursion");
+        setThe_Frame(300,200);
+        setResizable(false);
+        JPanel mPan = new JPanel();
+        add(mPan);
+        mPan.setLayout(new GridLayout(4,1,0,9));
+        radioGroup.add(rButIterative);
+        radioGroup.add(rButRecursive);
+        rButRecursive.setSelected(true);
+        mPan.add(enterNum);
+        mPan.add(input);
+        mPan.add(label);
+        mPan.add(compute);
+        mPan.add(results);
+        mPan.add(rOutput);
+        mPan.add(Efficieny);
+        mPan.add(eOutput);
+
+        // ADD ACTIONLISTENERS
+
 
     }
 
