@@ -3,6 +3,8 @@ package com.project3;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -13,7 +15,7 @@ import javax.swing.*;
 **********************************************************************************************************
 Author: Greg Lane
 Date: 09/26/16
-Project: project 3 - Recursion
+Project: project 3 - Program that calculates recursively or iteratively then logs to a csv file
 **********************************************************************************************************
  */
 
@@ -42,10 +44,11 @@ public class GUI extends JFrame {
     // Build vars to write file to csv
 
 
-    private static FileWriter Write;
+    private static FileWriter Writer;
     private File csvLog = new File("project3.csv");
 
     // end of file vars
+    private ArrayList<String> log = new ArrayList<>();
 
     private int eVal; // Value for to enter
 
@@ -61,9 +64,13 @@ public class GUI extends JFrame {
         setSize(width, height);
     }
 
+
+
+    // Get, set and clear methods
+
     public int getValue(){
         try{
-            return Integer.parseInt(enterNum.getText());
+            return Integer.parseInt(input.getText());
 
 
         }
@@ -75,7 +82,7 @@ public class GUI extends JFrame {
     }
 
     public void  clearValue(){
-        enterNum.setText("");
+        input.setText("");
     }
 
     public void setValue(){
@@ -83,6 +90,8 @@ public class GUI extends JFrame {
     }
 
 
+
+    // Action listener and Window adapter
 
     class ComputeButton implements ActionListener{
         @Override
@@ -94,24 +103,53 @@ public class GUI extends JFrame {
             } else if (rButIterative.isSelected()){
                 rOutput.setText(String.valueOf(Sequence.iterative(eVal)));
                 eOutput.setText(String.valueOf(Sequence.efficincy()));
-                //add to csv
+                log.add("Iterative" + ", " + Sequence.efficincy() + ", " + eVal);
                 // CODE SEQUENCE CLASS BEFORE CONTINUING;
+            } else if (rButRecursive.isSelected()){
+                rOutput.setText(String.valueOf(Sequence.recursion(eVal)));
+                eOutput.setText(String.valueOf((Sequence.efficincy())));
+                log.add("Recursive" + ", " + Sequence.efficincy() + ", " + eVal);
             }
             clearValue();
         }
     }
 
+    class CloseApplication extends WindowAdapter{
+        @Override
+        public void windowClosing(WindowEvent e){
 
-    public GUI(){
+            try{
+                if(log.isEmpty() == false){
+                    Writer = new FileWriter(csvLog);
+                    for (String l : log) {
+                        Writer.write(l + System.getProperty("line.separator"));
+                    }
+
+                    Writer.close();
+                }
+            }
+            catch(IOException x){
+                System.out.println("Caught IOException: " + x.getMessage() + "When trying to write to csv");
+                System.exit(0);
+
+            }
+            System.exit(0);
+        }
+    }
+
+
+    public GUI(){ // Builds the actual GUI and adds everything
         super("Iterative & Recursion");
-        setThe_Frame(300,200);
+        setThe_Frame(350,250);
         setResizable(false);
         JPanel mPan = new JPanel();
         add(mPan);
-        mPan.setLayout(new GridLayout(4,1,0,9));
+        mPan.setLayout(new GridLayout(5,2,0,10));
         radioGroup.add(rButIterative);
         radioGroup.add(rButRecursive);
-        rButRecursive.setSelected(true);
+        rButIterative.setSelected(true);
+        mPan.add(rButIterative);
+        mPan.add(rButRecursive);
         mPan.add(enterNum);
         mPan.add(input);
         mPan.add(label);
@@ -120,63 +158,20 @@ public class GUI extends JFrame {
         mPan.add(rOutput);
         mPan.add(Efficieny);
         mPan.add(eOutput);
-
-        // ADD ACTIONLISTENERS
+        CloseApplication closeWin = new CloseApplication();
+        compute.addActionListener(new ComputeButton());
+        addWindowListener(closeWin);
 
 
     }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Main
 
     public static void main(String[] args) {
 	// write your code here
+        GUI theApp = new GUI();
+        theApp.display();
     }
 }

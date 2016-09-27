@@ -15,12 +15,12 @@ public class Sequence {
     }
 
     public static int recursion(int n) {
-        effncy++;
+        effncy = 0;
         return actualRecursion(n); // Just calls the recursive method
     }
 
-    public static int actualRecursion(int n) {
-        effncy = 0;
+    private static int actualRecursion(int n) {
+
         // This method takes in the input of n and if it equals 0 or 1 returns
 
         if (n == 0) {
@@ -30,16 +30,17 @@ public class Sequence {
             effncy++;
             return 1;
         } else {
+            effncy++;
             return 2 * actualRecursion(n - 1) + actualRecursion(n - 2);
         }
 
     }
-    public static int efficincy(){
+    public static int efficincy(){ // Getter for the efficiency
         return effncy;
     }
 
 
-    public static int iterative(int n) {
+    public static int iterative(int n) { // Iterative method
         effncy = 0;
 
 
